@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Détails de l'inscription #{{ inscription.id }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/admin-inscriptions.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="admin-container show-page">
+        <div class="page-header show-page">
+            <h1>Détails de l'inscription #{{ inscription.id }}</h1>
+            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-row">
+                <div class="detail-label">ID Inscription</div>
+                <div class="detail-value">#{{ inscription.id }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Nom complet</div>
+                <div class="detail-value">{{ inscription.name }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">
+                    <a href="mailto:{{ inscription.email }}" class="event-link">{{ inscription.email }}</a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Téléphone</div>
+                <div class="detail-value">
+                    <a href="tel:{{ inscription.telephone }}" class="event-link">{{ inscription.telephone }}</a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Nombre de places</div>
+                <div class="detail-value">
+                    <span class="badge badge-primary">{{ inscription.placesNumber }} places</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Rôle assigné</div>
+                <div class="detail-value">
+                    <span class="badge badge-success">{{ inscription.role }}</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Événement lié</div>
+                <div class="detail-value">
+                    <a href="{{ path('admin_inscriptions_index', {event: inscription.eventId.id}) }}" class="event-link">
+                        {{ inscription.eventId.titre }}
+                    </a>
+                    {% if inscription.eventId.categoryId %}
+                        <br><small>Catégorie : {{ inscription.eventId.categoryId.name }}</small>
+                    {% endif %}
+                    <br><small>Total d'inscriptions : {{ inscription.eventId.inscriptions|length }}</small>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Date d'inscription</div>
+                <div class="detail-value">{{ inscription.createdAt|date('d/m/Y à H:i') }}</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')">
+                Supprimer définitivement
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmation de Suppression -->
+    <div id="deleteModal" class="modal-backdrop" onclick="if(event.target === this) closeDeleteModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Supprimer l'inscription ?</h2>
+            </div>
+            <div class="modal-body">
+                <p>Cette action est irréversible. Le participant sera définitivement retiré de la liste des inscrits pour cet événement.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Annuler</button>
+                <form id="confirmDeleteForm" method="post" action="">
+                    <input type="hidden" name="_token" id="confirmDeleteToken" value="">
+                    <button type="submit" class="btn btn-danger" style="background: var(--danger) !important; color: white !important;">
+                        Confirmer la suppression
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(url, token) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('confirmDeleteForm');
+            const tokenInput = document.getElementById('confirmDeleteToken');
+            
+            form.action = url;
+            tokenInput.value = token;
+            
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+    </script>
+{% endblock %}
