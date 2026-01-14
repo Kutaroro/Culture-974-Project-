@@ -17,8 +17,14 @@ final class EvenementController extends AbstractController
     #[Route(name: 'app_evenement_index', methods: ['GET'])]
     public function index(EvenementRepository $evenementRepository): Response
     {
+        $qb = $evenementRepository->createQueryBuilder('e');
+        $qb->where('e.date >= :today')
+           ->setParameter('today', new \DateTime('today'))
+           ->orderBy('e.date', 'ASC');
+        $evenements = $qb->getQuery()->getResult();
+
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
+            'evenements' => $evenements,
         ]);
     }
 
