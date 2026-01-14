@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Form\EvenementType;
+use App\Repository\CategoryRepository;
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,6 +62,19 @@ final class EvenementController extends AbstractController
     {
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
+        ]);
+    }
+
+    #[Route('/category/{id}', name: 'app_evenement_show_by_category', methods: ['GET'])]
+    public function showByCategory(int $id, CategoryRepository $categoryRepository, EvenementRepository $evenementRepository): Response
+    {
+        $categorie = $categoryRepository->find($id);
+        if (!$categorie) {
+            throw $this->createNotFoundException('Catégorie non trouvée');
+        }
+        $evenementsTrie = $evenementRepository->findBy(['category_id' => $categorie]);
+        return $this->render('evenement/index.html.twig', [
+            'evenements' => $evenementsTrie,
         ]);
     }
 
