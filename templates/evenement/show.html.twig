@@ -25,6 +25,10 @@
                 <td>{{ evenement.description }}</td>
             </tr>
             <tr>
+                <th>Catégorie </th>
+                <td>{{ evenement.categoryId.name }}</td>
+            </tr>
+            <tr>
                 <th>Date</th>
                 <td>{{ evenement.date ? evenement.date|date('Y-m-d') : '' }}</td>
             </tr>
