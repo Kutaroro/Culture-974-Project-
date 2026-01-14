@@ -6,14 +6,21 @@
         
         <nav>
             <ul class="nav-links">
-                <li><a href="/" class="{{ app.request.get('_route') == 'home' ? 'active' : '' }}">Accueil</a></li>
-                <li><a href="/evenements">Événements</a></li>
+                <li><a href="/evenement">Événements</a></li>
+                <li>
+                    {% include 'base_component/navbar_dropdown.html.twig' %}
+                </li>
                 <li><a href="{{ path('admin_inscriptions_index') }}" class="{{ app.request.get('_route') starts with 'admin_inscriptions' ? 'active' : '' }}">Administration</a></li>
             </ul>
         </nav>
 
         <div class="nav-actions">
-            <a href="#" class="btn btn-primary">Connexion</a>
+            {% if is_granted('ROLE_ADMIN') %}
+
+                <a href="{{ path('app_logout') }}" class="btn btn-secondary">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-primary">Connexion </a>
+            {% endif %}
         </div>
     </div>
 </header>

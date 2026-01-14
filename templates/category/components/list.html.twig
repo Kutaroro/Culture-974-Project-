@@ -1,0 +1,23 @@
+{#
+    Composant liste des catégories
+    Compatible avec les controllers Stimulus category et category-create-form
+
+    Paramètres :
+    - url (optionnel) : URL de l'API pour récupérer les catégories (défaut: /api/category)
+    - listClass (optionnel) : Classes CSS à ajouter à la liste <ul>
+#}
+{% set url = url|default('/api/category') %}
+{% set listClass = listClass|default('') %}
+
+<section class="category-list-card">
+    <h2>Liste des catégories</h2>
+
+    <ul
+        class="category-list {{ listClass }}"
+        data-controller="category"
+        data-category-create-form-target="list"
+        data-category-url-value="{{ url }}"
+    >
+        {# Le contenu sera généré dynamiquement par le controller Stimulus #}
+    </ul>
+</section>
