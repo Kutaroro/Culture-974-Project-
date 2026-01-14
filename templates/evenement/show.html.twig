@@ -2,6 +2,10 @@
 
 {% block title %}Evenement{% endblock %}
 
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+{% endblock %}
+
 {% block main %}
     <h1>Evenement</h1>
 
@@ -33,6 +37,7 @@
             </tr>
         </tbody>
     </table>
+
 
     <a href="{{ path('app_evenement_index') }}">back to list</a>
 
