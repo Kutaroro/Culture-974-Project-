@@ -104,10 +104,9 @@
                                 <td>
                                     <div class="actions">
                                         <a href="{{ path('admin_inscriptions_show', {id: inscription.id}) }}" class="btn btn-info">Voir</a>
-                                        <form method="post" action="{{ path('admin_inscriptions_delete', {id: inscription.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette inscription ?');" class="inline-form">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ inscription.id) }}">
-                                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')">
+                                            Supprimer
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -128,4 +127,45 @@
             </div>
         {% endif %}
     </div>
+
+    <!-- Modal de Confirmation de Suppression -->
+    <div id="deleteModal" class="modal-backdrop" onclick="if(event.target === this) closeDeleteModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Supprimer l'inscription ?</h2>
+            </div>
+            <div class="modal-body">
+                <p>Cette action est irréversible. Le participant sera définitivement retiré de la liste des inscrits pour cet événement.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Annuler</button>
+                <form id="confirmDeleteForm" method="post" action="">
+                    <input type="hidden" name="_token" id="confirmDeleteToken" value="">
+                    <button type="submit" class="btn btn-danger" style="background: var(--danger) !important; color: white !important;">
+                        Confirmer la suppression
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(url, token) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('confirmDeleteForm');
+            const tokenInput = document.getElementById('confirmDeleteToken');
+            
+            form.action = url;
+            tokenInput.value = token;
+            
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+    </script>
 {% endblock %}
