@@ -1,0 +1,77 @@
+/* =======================
+   Liste des catégories
+   (templates/category/components/list.html.twig)
+   ======================= */
+
+.category-list-card {
+    background: var(--card-bg, #ffffff);
+    border-radius: var(--radius, 12px);
+    box-shadow: var(--shadow, 0 1px 3px 0 rgb(0 0 0 / 0.1));
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+}
+
+.category-list-card h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.category-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.category-list li:last-child {
+    border-bottom: none;
+}
+
+.category-list li > span:first-child {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+[data-color] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.category-list button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-list button svg {
+    display: block;
+}

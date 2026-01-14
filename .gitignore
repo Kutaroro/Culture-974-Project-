@@ -9,6 +9,7 @@
 /vendor/
 symfony.lock
 composer.lock
+.editorconfig
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
