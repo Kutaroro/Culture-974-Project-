@@ -1,3 +1,28 @@
 <footer>
-    <p>&copy; {{ 'now'|date('Y') }} - Mon Application Agenda</p>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4 class="logo" style="color: white; margin-bottom: 1rem;">🌴 Culture<span>974</span></h4>
+            <p>Découvrez et participez aux meilleurs événements culturels de l'île de la Réunion. Une plateforme dédiée à la vie locale.</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Liens rapides</h4>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="/" style="color: #9ca3af; text-decoration: none; font-size: 0.875rem;">Accueil</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="/evenements" style="color: #9ca3af; text-decoration: none; font-size: 0.875rem;">Événements</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{{ path('admin_inscriptions_index') }}" style="color: #9ca3af; text-decoration: none; font-size: 0.875rem;">Admin Inscriptions</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <p>Saint-Denis, Île de la Réunion<br>
+            Email: contact@culture974.re<br>
+            Tél: +262 2 62 XX XX XX</p>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        &copy; {{ "now"|date("Y") }} Culture974. Tous droits réservés. Développé avec passion à la Réunion.
+    </div>
 </footer>
