@@ -1,41 +1,89 @@
-# Culture-974-Project-
-PROJET GROUPE : Agenda d'Événements
+# 🌴 Culture 974 - Agenda d'Événements
 
-- [Ajouter et exécuter les fixtures](#ajouter-et-exécuter-les-fixtures)
+Une application moderne de gestion d'événements culturels pour l'île de la Réunion, développée avec **Symfony 7**.
 
-## Ajouter et exécuter les fixtures
+---
 
-Les fixtures permettent de remplir la base de données avec des données de test (catégories, événements et inscriptions) pour le projet.
+## 🚀 Installation du projet
 
-1. **Installer le bundle de fixtures (si ce n’est pas déjà fait)**  
-   Dans le répertoire du projet :
+Suivez ces étapes pour installer le projet localement :
 
-   ```bash
-   composer require --dev orm-fixtures
-   ```
+1.  **Cloner le dépôt** :
 
-2. **Vérifier la présence du fichier de fixtures**  
-   Le fichier principal de fixtures se trouve dans :
-   `src/DataFixtures/AppFixtures.php`
+    ```bash
+    git clone <url-du-depot>
+    cd Culture-974-Project-
+    ```
 
-3. **Générer / mettre à jour le schéma de la base de données**  
-   Selon votre configuration, exécutez par exemple :
+2.  **Installer les dépendances PHP** :
 
-   ```bash
-   php bin/console doctrine:database:create
-   php bin/console doctrine:migrations:migrate
-   ```
+    ```bash
+    composer install
+    ```
 
-4. **Charger les données de fixtures**  
+3.  **Configurer l'environnement** :
 
-   ```bash
-   php bin/console doctrine:fixtures:load
-   ```
+    - Copiez le fichier `.env` en `.env.local` si nécessaire.
+    - Assurez-vous que l'extension SQLite est activée dans votre `php.ini`.
 
-   Cette commande va **vider** les tables concernées puis les remplir avec :
-   - 10 catégories
-   - 50 événements
-   - 100 inscriptions
+---
 
-5. **Recharger les fixtures en cas de besoin**  
-   Vous pouvez relancer la commande `doctrine:fixtures:load` à tout moment pour réinitialiser les données de démonstration.
+## 🗄️ Base de données & Migrations
+
+Préparez la base de données SQLite :
+
+1.  **Exécuter les migrations** :
+
+    ```bash
+    php bin/console doctrine:migrations:migrate --no-interaction
+    ```
+
+---
+
+## 🎭 Données de test (Fixtures)
+
+Pour remplir l'application avec des données de démonstration (catégories, événements, inscriptions) :
+
+```bash
+php bin/console doctrine:fixtures:load --no-interaction
+```
+
+_Cette commande réinitialise la base de données et insère 10 catégories, 50 événements et 100 inscriptions._
+
+---
+
+## ✨ Fonctionnalités disponibles
+
+### 📅 Espace Public
+
+- **Accueil** : Présentation des événements à venir.
+- **Catalogue d'Événements** : Liste complète des événements avec filtrage par categories
+- **Détails** : Consultation des informations détaillées d'un événement.
+- **Inscription** : Formulaire permettant aux utilisateurs de réserver des places.
+
+### 🔐 Espace Administration
+
+Accès via `/admin/inscriptions` (Lien "Administration" dans le menu).
+
+- **Authentification Sécurisée** : Système robuste sans table utilisateur (in-memory).
+- **Gestion des Inscriptions** : Liste complète des réservations par événement.
+- **Suivi des Places** : Calcul automatique du total des places réservées.
+- **Modération** : Possibilité de consulter et supprimer des inscriptions.
+
+**Identifiants par défaut :**
+
+- **Utilisateur** : `admin`
+- **Mot de passe** : `admin`
+
+---
+
+## 🛠️ Stack Technique
+
+- **Backend** : Symfony 7.4 + PHP 8.2
+- **Database** : SQLite / Doctrine ORM
+- **Frontend** : Twig / AssetMapper / Stimulus / Turbo
+- **Security** : Symfony Security (In-memory provider)
+
+---
+
+_Développé avec ❤️ pour la culture réunionnaise._
