@@ -78,7 +78,7 @@
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
-    <parameter key="kernel.share_dir">C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev</parameter>
+    <parameter key="kernel.share_dir">C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev</parameter>
     <parameter key=".container.known_envs" type="collection">
       <parameter>dev</parameter>
       <parameter>test</parameter>
@@ -412,11 +412,38 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\Controller\EvenementController" class="App\Controller\EvenementController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="routing.controller"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.TJNRSaV.App\Controller\EvenementController"/>
+      </call>
+    </service>
+    <service id="App\Entity\Category" class="App\Entity\Category" autowire="true" autoconfigure="true">
+      <tag name="container.excluded" source="because it's a Doctrine entity"/>
+      <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
+    </service>
     <service id="App\Entity\Evenement" class="App\Entity\Evenement" autowire="true" autoconfigure="true">
       <tag name="container.excluded" source="because it's a Doctrine entity"/>
       <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
     </service>
+    <service id="App\Entity\Inscription" class="App\Entity\Inscription" autowire="true" autoconfigure="true">
+      <tag name="container.excluded" source="because it's a Doctrine entity"/>
+      <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
+    </service>
+    <service id="App\Form\EvenementType" class="App\Form\EvenementType" autowire="true" autoconfigure="true">
+      <tag name="form.type" csrf_token_id="%.form.type_extension.csrf.token_id%"/>
+    </service>
+    <service id="App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\EvenementRepository" class="App\Repository\EvenementRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\InscriptionRepository" class="App\Repository\InscriptionRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -448,7 +475,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" priority="-50">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.8JS6QTA"/>
+      <argument type="service" id=".service_locator.OuqOY7L"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" priority="-100">controller.argument_value_resolver</tag>
@@ -542,7 +569,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev/http_cache</argument>
+      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -1440,9 +1467,11 @@
       <argument type="service" id="form.registry"/>
       <argument type="collection">
         <argument>Symfony\Component\Form\Extension\Core\Type</argument>
+        <argument>App\Form</argument>
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\EvenementType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FileType</argument>
@@ -1653,7 +1682,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument/>
       <argument>0</argument>
-      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev/pools/app</argument>
+      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -3540,7 +3569,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.8JS6QTA"/>
+      <argument type="service" id=".service_locator.OuqOY7L"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3621,7 +3650,9 @@
     </service>
     <service id="routing.loader.attribute.services" class="Symfony\Component\Routing\Loader\AttributeServicesLoader">
       <tag name="routing.loader" priority="-10"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument>App\Controller\EvenementController</argument>
+      </argument>
     </service>
     <service id="routing.loader.attribute.directory" class="Symfony\Component\Routing\Loader\AttributeDirectoryLoader">
       <tag name="routing.loader" priority="-10"/>
@@ -4155,7 +4186,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.rht_M5G"/>
+      <argument type="service" id=".service_locator.p.kAk9K"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -4263,7 +4294,9 @@
       <argument>validators</argument>
       <argument type="service" id="form.server_params"/>
       <argument>%form.type_extension.csrf.field_attr%</argument>
-      <argument>submit</argument>
+      <argument type="collection">
+        <argument key="App\Form\EvenementType">submit</argument>
+      </argument>
     </service>
     <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilder">
       <call method="setConstraintValidatorFactory">
@@ -5527,7 +5560,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.F4EnL5g"/>
+      <argument type="service" id=".service_locator.T4qLlXY"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -7655,10 +7688,24 @@
       <argument type="service" id="maker.file_manager"/>
       <argument type="service" id="maker.generator"/>
     </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\EvenementController" class="App\Controller\EvenementController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\EvenementController" class="App\Controller\EvenementController" autowire="true" abstract="true"/>
+    <service id=".instanceof.App\Controller\EvenementController.0.App\Controller\EvenementController" class="App\Controller\EvenementController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\EvenementController" class="App\Controller\EvenementController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.App\Entity\Category.0.App\Entity\Category" class="App\Entity\Category" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Entity\Category" class="App\Entity\Category" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.App\Entity\Evenement.0.App\Entity\Evenement" class="App\Entity\Evenement" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Entity\Evenement" class="App\Entity\Evenement" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.App\Entity\Inscription.0.App\Entity\Inscription" class="App\Entity\Inscription" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Entity\Inscription" class="App\Entity\Inscription" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\EvenementType" class="App\Form\EvenementType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\EvenementType" class="App\Form\EvenementType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EvenementRepository" class="App\Repository\EvenementRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\EvenementRepository" class="App\Repository\EvenementRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\InscriptionRepository" class="App\Repository\InscriptionRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\InscriptionRepository" class="App\Repository\InscriptionRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.ryAvHi4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8177,15 +8224,80 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.1vYpZ1B" method="withContext"/>
     </service>
-    <service id=".service_locator.8JS6QTA" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.n60qnZK" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="evenementRepository" type="service_closure" id="App\Repository\EvenementRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.n60qnZK.App\Controller\EvenementController::index()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController::index()"/>
+      <argument>App\Controller\EvenementController::index()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.n60qnZK" method="withContext"/>
+    </service>
+    <service id=".service_locator.3BoFVFw" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator.3BoFVFw.App\Controller\EvenementController::new()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController::new()"/>
+      <argument>App\Controller\EvenementController::new()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.3BoFVFw" method="withContext"/>
+    </service>
+    <service id=".service_locator.ZILOSg7" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="evenement" type="service_closure" id=".errored..service_locator.ZILOSg7.App\Entity\Evenement"/>
+      </argument>
+    </service>
+    <service id=".service_locator.ZILOSg7.App\Controller\EvenementController::show()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController::show()"/>
+      <argument>App\Controller\EvenementController::show()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.ZILOSg7" method="withContext"/>
+    </service>
+    <service id=".service_locator.RZ7EZA4" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="evenement" type="service_closure" id=".errored..service_locator.RZ7EZA4.App\Entity\Evenement"/>
+        <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator.RZ7EZA4.App\Controller\EvenementController::edit()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController::edit()"/>
+      <argument>App\Controller\EvenementController::edit()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.RZ7EZA4" method="withContext"/>
+    </service>
+    <service id=".service_locator.RZ7EZA4.App\Controller\EvenementController::delete()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController::delete()"/>
+      <argument>App\Controller\EvenementController::delete()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.RZ7EZA4" method="withContext"/>
+    </service>
+    <service id=".service_locator.OuqOY7L" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.1vYpZ1B.kernel::registerContainerConfiguration()"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.1vYpZ1B.kernel::registerContainerConfiguration()"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.1vYpZ1B.kernel::loadRoutes()"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.1vYpZ1B.kernel::loadRoutes()"/>
+        <argument key="App\Controller\EvenementController::index" type="service_closure" id=".service_locator.n60qnZK.App\Controller\EvenementController::index()"/>
+        <argument key="App\Controller\EvenementController::new" type="service_closure" id=".service_locator.3BoFVFw.App\Controller\EvenementController::new()"/>
+        <argument key="App\Controller\EvenementController::show" type="service_closure" id=".service_locator.ZILOSg7.App\Controller\EvenementController::show()"/>
+        <argument key="App\Controller\EvenementController::edit" type="service_closure" id=".service_locator.RZ7EZA4.App\Controller\EvenementController::edit()"/>
+        <argument key="App\Controller\EvenementController::delete" type="service_closure" id=".service_locator.RZ7EZA4.App\Controller\EvenementController::delete()"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.1vYpZ1B.kernel::registerContainerConfiguration()"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.1vYpZ1B.kernel::loadRoutes()"/>
+        <argument key="App\Controller\EvenementController:index" type="service_closure" id=".service_locator.n60qnZK.App\Controller\EvenementController::index()"/>
+        <argument key="App\Controller\EvenementController:new" type="service_closure" id=".service_locator.3BoFVFw.App\Controller\EvenementController::new()"/>
+        <argument key="App\Controller\EvenementController:show" type="service_closure" id=".service_locator.ZILOSg7.App\Controller\EvenementController::show()"/>
+        <argument key="App\Controller\EvenementController:edit" type="service_closure" id=".service_locator.RZ7EZA4.App\Controller\EvenementController::edit()"/>
+        <argument key="App\Controller\EvenementController:delete" type="service_closure" id=".service_locator.RZ7EZA4.App\Controller\EvenementController::delete()"/>
       </argument>
     </service>
     <service id=".service_locator.DA6YX9k" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8371,9 +8483,10 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.rht_M5G" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.p.kAk9K" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\EvenementType" type="service_closure" id="App\Form\EvenementType"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service_closure" id="form.type.form"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\FileType" type="service_closure" id="form.type.file"/>
@@ -8522,10 +8635,12 @@
         <argument key="turbo.doctrine.event_listener" type="service_closure" id="turbo.doctrine.event_listener"/>
       </argument>
     </service>
-    <service id=".service_locator.F4EnL5g" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.T4qLlXY" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\CategoryRepository" type="service_closure" id="App\Repository\CategoryRepository"/>
         <argument key="App\Repository\EvenementRepository" type="service_closure" id="App\Repository\EvenementRepository"/>
+        <argument key="App\Repository\InscriptionRepository" type="service_closure" id="App\Repository\InscriptionRepository"/>
       </argument>
     </service>
     <service id=".service_locator.W55Po6X" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8794,6 +8909,12 @@
         <argument key="web_link.http_header_serializer" type="service_closure" id="web_link.http_header_serializer" on-invalid="ignore"/>
       </argument>
     </service>
+    <service id=".service_locator.TJNRSaV.App\Controller\EvenementController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EvenementController"/>
+      <argument>App\Controller\EvenementController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.TJNRSaV" method="withContext"/>
+    </service>
     <service id=".service_locator.TJNRSaV.controller.helper" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="controller.helper"/>
       <argument>controller.helper</argument>
@@ -8993,6 +9114,7 @@
       <call method="allowControllers">
         <argument type="collection">
           <argument>App\Kernel</argument>
+          <argument>App\Controller\EvenementController</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
       </call>
@@ -9224,6 +9346,12 @@
     </service>
     <service id=".errored..service_locator.1vYpZ1B.Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.1vYpZ1B&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
+    </service>
+    <service id=".errored..service_locator.ZILOSg7.App\Entity\Evenement" class="App\Entity\Evenement">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.ZILOSg7&quot;: it needs an instance of &quot;App\Entity\Evenement&quot; but this type has been excluded because it's a Doctrine entity."/>
+    </service>
+    <service id=".errored..service_locator.RZ7EZA4.App\Entity\Evenement" class="App\Entity\Evenement">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.RZ7EZA4&quot;: it needs an instance of &quot;App\Entity\Evenement&quot; but this type has been excluded because it's a Doctrine entity."/>
     </service>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
@@ -10190,7 +10318,7 @@
     <service id="cache.app.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>dGh1K3sfvU</argument>
       <argument>0</argument>
-      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev/pools/app</argument>
+      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10239,7 +10367,7 @@
     <service id="cache.messenger.restart_workers_signal.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>H4NgF4BiwD</argument>
       <argument>0</argument>
-      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev/pools/app</argument>
+      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10248,7 +10376,7 @@
     <service id="cache.http_client.pool.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>bX6vCgrmV2</argument>
       <argument>0</argument>
-      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-/var/share/dev/pools/app</argument>
+      <argument>C:\Users\emiel\Desktop\Expernet\semaine3\evenement974\Culture-974-Project-\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10451,7 +10579,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.ryAvHi4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.8JS6QTA"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.OuqOY7L"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.W55Po6X"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id=".Psr\Log\LoggerInterface $request.logger" alias="monolog.logger.request"/>
@@ -10510,6 +10638,10 @@
     <service id=".signing.messenger.default_serializer.inner" alias="messenger.transport.native_php_serializer"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.c0wzfI4" alias=".service_locator.1vYpZ1B"/>
+    <service id=".service_locator.KNSic_m" alias=".service_locator.n60qnZK"/>
+    <service id=".service_locator.UOV1jy9" alias=".service_locator.3BoFVFw"/>
+    <service id=".service_locator.ZeT7cvk" alias=".service_locator.ZILOSg7"/>
+    <service id=".service_locator.MBEkWAK" alias=".service_locator.RZ7EZA4"/>
     <service id=".service_locator.D6tJ4Px" alias=".service_locator.TJNRSaV"/>
   </services>
 </container>
