@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Inscriptions{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/admin-inscriptions.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="admin-container">
+        <div class="page-header">
+            <h1>Inscriptions aux événements</h1>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Inscriptions</h3>
+                <div class="value">{{ inscriptions|length }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Places réservées</h3>
+                <div class="value">{{ totalPlaces }}</div>
+            </div>
+            {% if selectedEvent %}
+                <div class="stat-card">
+                    <h3>Événement sélectionné</h3>
+                    <div class="value" style="font-size: 1.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        {{ selectedEvent.titre }}
+                    </div>
+                    {% if selectedEvent.categoryId %}
+                        <p class="stat-card-category">{{ selectedEvent.categoryId.name }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="filter-section">
+            <form method="get" action="{{ path('admin_inscriptions_index') }}">
+                <label for="event">Filtrer par événement</label>
+                <select name="event" id="event">
+                    <option value="">Tous les événements</option>
+                    {% for evenement in evenements %}
+                        <option value="{{ evenement.id }}" {{ selectedEvent and selectedEvent.id == evenement.id ? 'selected' : '' }}>
+                            {{ evenement.titre }}{% if evenement.categoryId %} - {{ evenement.categoryId.name }}{% endif %} ({{ evenement.inscriptions|length }} inscr.)
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary">Appliquer le filtre</button>
+                    {% if selectedEvent %}
+                        <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Réinitialiser</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        {% if inscriptions|length > 0 %}
+            <div class="table-wrapper">
+                <table class="inscriptions-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Participant</th>
+                            <th>Places</th>
+                            <th>Rôle</th>
+                            <th>Événement</th>
+                            <th>Date d'inscription</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscription in inscriptions %}
+                            <tr>
+                                <td>#{{ inscription.id }}</td>
+                                <td>
+                                    <span class="participant-name">{{ inscription.name }}</span>
+                                    <span class="participant-email">{{ inscription.email }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">{{ inscription.placesNumber }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">{{ inscription.role }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('admin_inscriptions_index', {event: inscription.eventId.id}) }}" class="event-link">
+                                        {{ inscription.eventId.titre }}
+                                    </a>
+                                </td>
+                                <td>{{ inscription.createdAt|date('d/m/Y H:i') }}</td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="{{ path('admin_inscriptions_show', {id: inscription.id}) }}" class="btn btn-info">Voir</a>
+                                        <form method="post" action="{{ path('admin_inscriptions_delete', {id: inscription.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette inscription ?');" class="inline-form">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ inscription.id) }}">
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>Aucune inscription trouvée</h2>
+                <p>
+                    {% if selectedEvent %}
+                        Aucune inscription pour cet événement.
+                    {% else %}
+                        Il n'y a actuellement aucune inscription enregistrée.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

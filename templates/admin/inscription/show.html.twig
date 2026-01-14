@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Détails de l'inscription #{{ inscription.id }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/admin-inscriptions.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="admin-container show-page">
+        <div class="page-header show-page">
+            <h1>Détails de l'inscription #{{ inscription.id }}</h1>
+            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-row">
+                <div class="detail-label">ID Inscription</div>
+                <div class="detail-value">#{{ inscription.id }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Nom complet</div>
+                <div class="detail-value">{{ inscription.name }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">
+                    <a href="mailto:{{ inscription.email }}" class="event-link">{{ inscription.email }}</a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Téléphone</div>
+                <div class="detail-value">
+                    <a href="tel:{{ inscription.telephone }}" class="event-link">{{ inscription.telephone }}</a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Nombre de places</div>
+                <div class="detail-value">
+                    <span class="badge badge-primary">{{ inscription.placesNumber }} places</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Rôle assigné</div>
+                <div class="detail-value">
+                    <span class="badge badge-success">{{ inscription.role }}</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Événement lié</div>
+                <div class="detail-value">
+                    <a href="{{ path('admin_inscriptions_index', {event: inscription.eventId.id}) }}" class="event-link">
+                        {{ inscription.eventId.titre }}
+                    </a>
+                    {% if inscription.eventId.categoryId %}
+                        <br><small>Catégorie : {{ inscription.eventId.categoryId.name }}</small>
+                    {% endif %}
+                    <br><small>Total d'inscriptions : {{ inscription.eventId.inscriptions|length }}</small>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Date d'inscription</div>
+                <div class="detail-value">{{ inscription.createdAt|date('d/m/Y à H:i') }}</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            <form method="post" action="{{ path('admin_inscriptions_delete', {id: inscription.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette inscription ?');" class="inline-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ inscription.id) }}">
+                <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
