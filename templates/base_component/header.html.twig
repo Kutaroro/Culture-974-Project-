@@ -1,0 +1,19 @@
+<header>
+    <div class="nav-container">
+        <a href="/" class="logo">
+            🌴 Culture<span>974</span>
+        </a>
+        
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="{{ app.request.get('_route') == 'home' ? 'active' : '' }}">Accueil</a></li>
+                <li><a href="/evenements">Événements</a></li>
+                <li><a href="{{ path('admin_inscriptions_index') }}" class="{{ app.request.get('_route') starts with 'admin_inscriptions' ? 'active' : '' }}">Administration</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="#" class="btn btn-primary">Connexion</a>
+        </div>
+    </div>
+</header>
