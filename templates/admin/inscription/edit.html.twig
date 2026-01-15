@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'Inscription #{{ inscription.id }}{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/admin-inscriptions.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/modern-forms.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="admin-container">
+	<div class="form-card">
+		<div class="form-header">
+			<h1>Modifier l'Inscription</h1>
+			<p>Modification de l'inscription de <strong>{{ inscription.name }}</strong> pour l'événement <strong>{{ inscription.eventId.titre }}</strong>.</p>
+		</div>
+
+		{{ form_start(form, {'attr': {'class': 'modern-form'}}) }}
+		<div class="form-group">
+			{{ form_label(form.name, 'Nom complet') }}
+			{{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Jean Dupont'}}) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.email, 'Email') }}
+			{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@email.com'}}) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.telephone, 'Téléphone') }}
+			{{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder': '06 92 XX XX XX'}}) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.placesNumber, 'Nombre de places') }}
+			{{ form_widget(form.placesNumber, {'attr': {'class': 'form-control', 'min': 1}}) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.role, 'Rôle / Fonction') }}
+			{{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		{{ form_widget(form.submit, {'attr': {'class': 'btn-submit'}, 'label': 'Enregistrer les modifications'}) }}
+        {{ form_end(form) }}
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a href="{{ path('admin_inscriptions_index') }}" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">
+                ← Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

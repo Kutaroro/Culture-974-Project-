@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/evenement')]
 final class EvenementController extends AbstractController
@@ -40,6 +41,7 @@ final class EvenementController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -85,9 +87,14 @@ final class EvenementController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, int $id, EvenementRepository $evenementRepository, EntityManagerInterface $entityManager): Response
     {
+        $evenement = $evenementRepository->find($id);
+        if (!$evenement) {
+            return $this->redirectToRoute('app_erreur', ['erreur' => 'Evenement'], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
 
@@ -103,9 +110,15 @@ final class EvenementController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_evenement_delete', methods: ['POST'])]
-    public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, int $id, EvenementRepository $evenementRepository, EntityManagerInterface $entityManager): Response
     {
+        $evenement = $evenementRepository->find($id);
+        if (!$evenement) {
+            return $this->redirectToRoute('app_erreur', ['erreur' => 'Evenement'], Response::HTTP_SEE_OTHER);
+        }
+        
         if ($this->isCsrfTokenValid('delete'.$evenement->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($evenement);
             $entityManager->flush();

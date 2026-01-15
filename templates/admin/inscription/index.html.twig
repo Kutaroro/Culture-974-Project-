@@ -90,10 +90,15 @@
                                 </td>
                                 <td>{{ inscription.createdAt|date('d/m/Y H:i') }}</td>
                                 <td>
-                                    <div class="actions">
-                                        <a href="{{ path('admin_inscriptions_show', {id: inscription.id}) }}" class="btn btn-info">Voir</a>
-                                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')">
-                                            Supprimer
+                                    <div class="actions" style="display: flex; gap: 0.5rem;">
+                                        <a href="{{ path('admin_inscriptions_show', {id: inscription.id}) }}" class="btn btn-info" title="Voir">
+                                            <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                                        </a>
+                                        <a href="{{ path('admin_inscriptions_edit', {id: inscription.id}) }}" class="btn btn-secondary" title="Modifier" style="background: #f3f4f6 !important; border: 1px solid #d1d5db !important; padding: 0.625rem;">
+                                            <i data-lucide="edit-3" style="width: 18px; height: 18px; color: #374151;"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger" title="Supprimer" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')" style="padding: 0.625rem;">
+                                            <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
                                         </button>
                                     </div>
                                 </td>

@@ -72,10 +72,18 @@
             </div>
         </div>
 
-        <div class="actions">
-            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary">Retour à la liste</a>
-            <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')">
-                Supprimer définitivement
+        <div class="actions" style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <a href="{{ path('admin_inscriptions_index') }}" class="btn btn-secondary" style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="arrow-left" style="width: 18px; height: 18px;"></i>
+                Retour à la liste
+            </a>
+            <a href="{{ path('admin_inscriptions_edit', {id: inscription.id}) }}" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="edit-3" style="width: 18px; height: 18px;"></i>
+                Modifier
+            </a>
+            <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ path('admin_inscriptions_delete', {id: inscription.id}) }}', '{{ csrf_token('delete' ~ inscription.id) }}')" style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                Supprimer
             </button>
         </div>
     </div>

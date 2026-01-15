@@ -76,18 +76,69 @@ class AppFixtures extends Fixture
             'Lille', 'Nantes', 'Strasbourg', 'Montpellier', 'Nice'
         ];
 
-        // Images de démonstration (par exemple des fichiers dans /public/images)
-        $eventImages = [
-            'images/event1.jpg', 'images/event2.jpg', 'images/event3.jpg',
-            'images/event4.jpg', 'images/event5.jpg'
+        // Mapping direct de chaque titre d'événement vers son mot-clé LoremFlickr unique
+        $eventTitleKeywords = [
+            'Conférence Innovation 2024' => 'innovation',
+            'Formation Symfony Avancé' => 'symfony',
+            'Séminaire Management' => 'management',
+            'Workshop Design Thinking' => 'design-thinking',
+            'Networking Entrepreneurs' => 'entrepreneurs',
+            'Exposition Art Moderne' => 'modern-art',
+            'Concert Jazz en Plein Air' => 'jazz',
+            'Tournoi de Football' => 'football',
+            'Festival de Théâtre' => 'theater',
+            'Hackathon Tech' => 'hackathon',
+            'Conférence IA et Éthique' => 'artificial-intelligence',
+            'Formation React Native' => 'react',
+            'Séminaire Leadership' => 'leadership',
+            'Workshop UX/UI' => 'user-interface',
+            'Networking Startups' => 'startups',
+            'Exposition Photographie' => 'photography',
+            'Concert Rock Alternatif' => 'rock-music',
+            'Marathon de Paris' => 'marathon',
+            'Festival de Cinéma' => 'cinema',
+            'Conférence Blockchain' => 'blockchain',
+            'Formation Docker' => 'docker',
+            'Séminaire Marketing Digital' => 'digital-marketing',
+            'Workshop Agile' => 'agile',
+            'Networking Investisseurs' => 'investors',
+            'Exposition Sculpture' => 'sculpture',
+            'Concert Classique' => 'classical-music',
+            'Tournoi de Tennis' => 'tennis',
+            'Festival de Musique' => 'music-festival',
+            'Conférence Cybersécurité' => 'cybersecurity',
+            'Formation Vue.js' => 'vuejs',
+            'Séminaire RH' => 'human-resources',
+            'Workshop Data Science' => 'data-science',
+            'Networking Freelances' => 'freelancers',
+            'Exposition Peinture' => 'painting',
+            'Concert Électro' => 'electronic-music',
+            'Trail Montagne' => 'mountain-trail',
+            'Festival de Danse' => 'dance',
+            'Conférence Green Tech' => 'green-technology',
+            'Formation Angular' => 'angular',
+            'Séminaire Finance' => 'finance',
+            'Workshop DevOps' => 'devops',
+            'Networking Designers' => 'designers',
+            'Exposition Architecture' => 'architecture',
+            'Concert Pop' => 'pop-music',
+            'Tournoi de Basketball' => 'basketball',
+            'Festival de Littérature' => 'literature',
+            'Conférence E-commerce' => 'ecommerce',
+            'Formation Python' => 'python',
+            'Séminaire Communication' => 'communication',
+            'Workshop IA' => 'machine-learning',
+            'Networking Développeurs' => 'developers'
         ];
 
         for ($i = 0; $i < 50; $i++) {
             $evenement = new Evenement();
-            $evenement->setCategoryId($categories[$i % 10]);
+            $category = $categories[$i % 10];
+            $evenement->setCategoryId($category);
 
             // Nouveau champs
-            $evenement->setTitre($eventNames[$i]);
+            $titre = $eventNames[$i];
+            $evenement->setTitre($titre);
             $evenement->setDescription($eventDescriptions[$i % count($eventDescriptions)]);
 
             // Dates réparties sur les prochains jours
@@ -96,11 +147,9 @@ class AppFixtures extends Fixture
 
             $evenement->setLieu($eventPlaces[$i % count($eventPlaces)]);
 
-            // Certaines images peuvent être nulles pour varier
-            $image = $eventImages[$i % count($eventImages)];
-            if ($i % 7 === 0) {
-                $image = null;
-            }
+            // Générer une image LoremFlickr basée sur le titre exact de l'événement
+            $keyword = $eventTitleKeywords[$titre] ?? 'event';
+            $image = 'https://loremflickr.com/800/600/' . $keyword;
             $evenement->setImage($image);
 
             $manager->persist($evenement);
