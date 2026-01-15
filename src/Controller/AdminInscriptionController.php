@@ -69,6 +69,26 @@ class AdminInscriptionController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/edit', name: 'admin_inscriptions_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Inscription $inscription, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(InscriptionType::class, $inscription);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'L\'inscription a été modifiée avec succès.');
+
+            return $this->redirectToRoute('admin_inscriptions_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('admin/inscription/edit.html.twig', [
+            'inscription' => $inscription,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'admin_inscriptions_delete', methods: ['POST'])]
     public function delete(Request $request, Inscription $inscription): Response
     {
