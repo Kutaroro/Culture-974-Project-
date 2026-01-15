@@ -19,7 +19,11 @@
                     <h2 class="text-xl font-bold mb-2">{{ evenement.titre }}</h2>
                     <p class="mb-2"><strong>Catégorie:</strong> {{ evenement.categoryId.name  }}</p>
                     {% if evenement.image %}
-                        <img src="{{ asset('uploads/images/' ~ evenement.image) }}" alt="{{ evenement.titre }}" class="w-full h-48 object-cover rounded mb-2">
+                        {% if evenement.image starts with 'http://' or evenement.image starts with 'https://' %}
+                            <img src="{{ evenement.image }}" alt="{{ evenement.titre }}" class="w-full h-48 object-cover rounded mb-2">
+                        {% else %}
+                            <img src="{{ asset('uploads/images/' ~ evenement.image) }}" alt="{{ evenement.titre }}" class="w-full h-48 object-cover rounded mb-2">
+                        {% endif %}
                     {% endif %}
                     <p class="text-gray-600 mb-2">{{ evenement.description }}</p>
                     <p class="mb-1"><strong>Date:</strong> {{ evenement.date ? evenement.date|date('d/m/Y') : '' }}</p>
