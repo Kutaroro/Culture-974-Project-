@@ -11,6 +11,12 @@
         {% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
+            <script src="https://unpkg.com/lucide@latest"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    lucide.createIcons();
+                });
+            </script>
         {% endblock %}
     </head>
     <body>
