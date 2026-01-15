@@ -31,6 +31,9 @@ final class EvenementController extends AbstractController
         }
         
         $evenements = $qb->getQuery()->getResult();
+        if (!$evenements) {
+            return $this->redirectToRoute('app_erreur', ['erreur' => 'Evenements'], Response::HTTP_SEE_OTHER);
+        }
 
         return $this->render('evenement/index.html.twig', [
             'evenements' => $evenements,
@@ -58,8 +61,12 @@ final class EvenementController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_evenement_show', methods: ['GET'])]
-    public function show(Evenement $evenement): Response
+    public function show(int $id, EvenementRepository $evenementRepository): Response
     {
+        $evenement = $evenementRepository->find($id);
+        if (!$evenement) {
+            return $this->redirectToRoute('app_erreur', ['erreur' => 'Evenement'], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
         ]);
@@ -70,7 +77,7 @@ final class EvenementController extends AbstractController
     {
         $categorie = $categoryRepository->find($id);
         if (!$categorie) {
-            throw $this->createNotFoundException('Catégorie non trouvée');
+            return $this->redirectToRoute('app_erreur', ['erreur' => 'Catégorie'], Response::HTTP_SEE_OTHER);
         }
         $evenementsTrie = $evenementRepository->findBy(['category_id' => $categorie]);
         return $this->render('evenement/index.html.twig', [
@@ -105,5 +112,13 @@ final class EvenementController extends AbstractController
         }
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('erreur/{erreur}', name: 'app_erreur')]
+    public function erreur(String $erreur): Response
+    {
+        return $this->render('bundles\TwigBundle\Exception\error404.html.twig', [
+            'erreur' =>$erreur,
+        ]);
     }
 }
