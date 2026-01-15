@@ -1,0 +1,19 @@
+<div class="navbar-dropdown" data-controller="category-dropdown">
+    <button 
+        class="dropdown-toggle" 
+        type="button" 
+        data-category-dropdown-target="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+    >
+        Catégories
+        <span class="dropdown-arrow">▼</span>
+    </button>
+    <ul 
+        class="dropdown-menu" 
+        data-category-dropdown-target="menu"
+        role="menu"
+    >
+        {# Les catégories seront chargées dynamiquement par le controller Stimulus #}
+    </ul>
+</div>

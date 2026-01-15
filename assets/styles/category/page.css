@@ -1,0 +1,32 @@
+/* =======================
+   Layout page catégories
+   (templates/category/components/page/index.html.twig)
+   ======================= */
+
+:root {
+    --category-gap: 1.5rem;
+}
+
+.category-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+}
+
+.category-page h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
+}
+
+.category-layout {
+    display: flex;
+    flex-direction: row;
+    gap: var(--category-gap);
+    flex: 1;
+    min-height: 0;
+}

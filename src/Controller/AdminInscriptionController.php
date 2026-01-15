@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Evenement;
 use App\Entity\Inscription;
+use App\Form\InscriptionType;
 use App\Repository\InscriptionRepository;
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;

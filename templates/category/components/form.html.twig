@@ -1,0 +1,98 @@
+{#
+    Composant formulaire de création de catégorie
+    Compatible avec le controller Stimulus category-create-form
+
+    Paramètres :
+    - url (optionnel) : URL de l'API pour créer une catégorie (défaut: /api/category)
+#}
+{% set url = url|default('/api/category') %}
+
+<section class="category-form-card">
+    <h2 data-category-create-form-target="title">Créer une catégorie</h2>
+
+    <form
+        class="category-form"
+        data-controller="category-create-form"
+        data-action="submit->category-create-form#submit category:edit@window->category-create-form#loadCategory"
+        data-category-create-form-url-value="{{ url }}"
+    >
+        <div class="category-form-group">
+            <label for="category-name">Nom</label>
+            <input
+                type="text"
+                id="category-name"
+                name="name"
+                required
+                placeholder="Nom de la catégorie"
+            >
+        </div>
+
+        <div class="category-form-group">
+            <label for="category-color">Couleur</label>
+            <input
+                type="text"
+                id="category-color"
+                name="color"
+                required
+                placeholder="Couleur (ex: FF5733)"
+                pattern="[0-9A-Fa-f]{6}"
+                title="Couleur en hexadécimal sans le # (6 caractères)"
+            >
+        </div>
+
+        <div class="category-form-group">
+            <label for="category-icone">Icône</label>
+            <input
+                type="text"
+                id="category-icone"
+                name="icone"
+                required
+                placeholder="Icône"
+            >
+        </div>
+
+        <div class="category-form-actions">
+            <button
+                type="button"
+                class="category-delete-btn"
+                data-category-create-form-target="deleteButton"
+                data-action="click->category-create-form#confirmDelete"
+                style="display: none;"
+            >
+                Supprimer la catégorie
+            </button>
+            <button type="submit" class="category-submit-btn" data-category-create-form-target="submitButton">Créer la catégorie</button>
+        </div>
+
+        {# Modal de confirmation de suppression #}
+        <div id="category-delete-modal" class="modal-backdrop" data-category-create-form-target="deleteModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Supprimer la catégorie</h2>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Voulez-vous vraiment supprimer la catégorie
+                        <strong data-category-create-form-target="deleteCategoryName"></strong> ?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-action="click->category-create-form#cancelDelete"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        data-action="click->category-create-form#deleteConfirmed"
+                    >
+                        Supprimer la catégorie
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

@@ -20,8 +20,8 @@ class AppFixtures extends Fixture
             'Exposition', 'Concert', 'Sport', 'Culture', 'Technologie'
         ];
         $categoryColors = [
-            '#FF5733', '#33FF57', '#3357FF', '#FF33F5', '#F5FF33',
-            '#33FFF5', '#FF8C33', '#8C33FF', '#33FF8C', '#FF338C'
+            'FF5733', '33FF57', '3357FF', 'FF33F5', 'F5FF33',
+            '33FFF5', 'FF8C33', '8C33FF', '33FF8C', 'FF338C'
         ];
         $categoryIcones = [
             '🎤', '📚', '💼', '🔧', '🤝',

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/category/page.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/category/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/category/list.css') }}">
+{% endblock %}
+
+{% block main %}
+    <main class="category-page">
+        <h1>Gestion des catégories</h1>
+
+        <div class="category-layout">
+            {# Liste des catégories #}
+            {% include 'category/components/list.html.twig' %}
+
+            {# Formulaire de création de catégorie #}
+            {% include 'category/components/form.html.twig' %}
+        </div>
+    </main>
+{% endblock %}
+
