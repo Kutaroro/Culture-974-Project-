@@ -33,6 +33,17 @@ export default class extends Controller {
         this.loadCategories();
         this.isOpen = false;
         this.setupToggle();
+        this.currentCategoryId = this.getCurrentCategoryId();
+    }
+
+    /**
+     * Récupère l'ID de la catégorie depuis les paramètres de l'URL
+     * @returns {number|null}
+     */
+    getCurrentCategoryId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryParam = urlParams.get('category');
+        return categoryParam ? parseInt(categoryParam, 10) : null;
     }
 
     setupToggle() {
@@ -178,6 +189,11 @@ export default class extends Controller {
         const link = document.createElement('a');
         link.href = `/evenement?category=${category.id}`;
         link.className = 'dropdown-link';
+
+        // Ajouter la classe active si c'est la catégorie actuelle
+        if (this.currentCategoryId && category.id === this.currentCategoryId) {
+            link.classList.add('active');
+        }
 
         // Icône de la catégorie si disponible
         if (category.icone) {

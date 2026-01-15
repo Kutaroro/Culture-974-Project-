@@ -33,7 +33,7 @@ class CategoryController extends AbstractController
         return $this->json($data, Response::HTTP_OK);
     }
 
-    #[isGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('', name: 'api_category_create', methods: ['PUT'])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -67,7 +67,7 @@ class CategoryController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
-    #[isGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'api_category_update', methods: ['PATCH'])]
     public function update(int $id, Request $request, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -107,7 +107,7 @@ class CategoryController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-    #[isGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'api_category_delete', methods: ['DELETE'])]
     public function delete(int $id, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): JsonResponse
     {
