@@ -81,26 +81,4 @@ class AdminInscriptionController extends AbstractController
 
         return $this->redirectToRoute('admin_inscriptions_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    #[Route('inscription/{id}', name: 'admin_inscriptions_event')]
-    public function createInscription(EntityManagerInterface $entityManager, Request $request, int $id, EvenementRepository $evenementRepository): Response
-    {
-        $inscription = new Inscription();
-        $event = $this->evenementRepository->find($id);
-        $form = $this->createForm(InscriptionType::class, $inscription);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $inscription = $form->getData();
-            $inscription->setCreatedAt(new \DateTimeImmutable());
-            $inscription->setEventId($event);
-            $entityManager->persist($inscription);
-            $entityManager->flush();
-            return $this->redirectToRoute('admin_inscriptions_index', [], Response::HTTP_SEE_OTHER);        
-            }
-
-        return $this->render('admin/inscription/new.html.twig', [
-            'form' => $form,
-        ]);
-       
-    }
 }
