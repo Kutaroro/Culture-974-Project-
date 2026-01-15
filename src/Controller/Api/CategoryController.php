@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/category')]
 class CategoryController extends AbstractController
@@ -32,6 +33,7 @@ class CategoryController extends AbstractController
         return $this->json($data, Response::HTTP_OK);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('', name: 'api_category_create', methods: ['PUT'])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -65,6 +67,7 @@ class CategoryController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'api_category_update', methods: ['PATCH'])]
     public function update(int $id, Request $request, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -104,6 +107,7 @@ class CategoryController extends AbstractController
         ], Response::HTTP_OK);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'api_category_delete', methods: ['DELETE'])]
     public function delete(int $id, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): JsonResponse
     {

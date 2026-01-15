@@ -10,7 +10,10 @@
                 <li>
                     {% include 'base_component/navbar_dropdown.html.twig' %}
                 </li>
-                <li><a href="{{ path('admin_inscriptions_index') }}" class="{{ app.request.get('_route') starts with 'admin_inscriptions' ? 'active' : '' }}">Administration</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('admin_inscriptions_index') }}" class="{{ app.request.get('_route') starts with 'admin_inscriptions' ? 'active' : '' }}">Inscription</a></li>
+                <li><a href="{{ path('app_category_index') }}" class="{{ app.request.get('_route') starts with 'admin_inscriptions' ? 'active' : '' }}">Catégorie</a></li>
+                {% endif %}
             </ul>
         </nav>
 
