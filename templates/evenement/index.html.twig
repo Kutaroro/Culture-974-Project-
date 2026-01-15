@@ -17,7 +17,7 @@
             <a href="{{ path('app_evenement_show', {'id': evenement.id}) }}">
                 <div class="bg-white shadow-md rounded-lg p-4">
                     <h2 class="text-xl font-bold mb-2">{{ evenement.titre }}</h2>
-                    <p class="mb-2"><strong>Lieu:</strong> {{ evenement.categoryId.name  }}</p>
+                    <p class="mb-2"><strong>Catégorie:</strong> {{ evenement.categoryId.name  }}</p>
                     {% if evenement.image %}
                         <img src="{{ asset('uploads/images/' ~ evenement.image) }}" alt="{{ evenement.titre }}" class="w-full h-48 object-cover rounded mb-2">
                     {% endif %}
